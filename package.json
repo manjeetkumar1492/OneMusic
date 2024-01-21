@@ -2,6 +2,7 @@
   "name": "onemusic",
   "version": "1.0.0",
   "description": "",
+  "main": "/frontend/build/index.html",
   "scripts": {
     "start": "cd backend && npm install && npm start & cd ../frontend && npm install && npm start",
     "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
