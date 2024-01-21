@@ -1,0 +1,19 @@
+{
+  "name": "onemusic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manjeet826510/OneMusic.git"
+  },
+  "author": "Manjeet Kumar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manjeet826510/OneMusic/issues"
+  },
+  "homepage": "https://github.com/manjeet826510/OneMusic#readme"
+}
