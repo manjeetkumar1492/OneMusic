@@ -10,7 +10,7 @@ const HomeScreen = () => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const result = await axios.get("http://localhost:5000/api/songs");
+            const result = await axios.get("https://one-music-7snl.onrender.com/api/songs");
             console.log(result.data);
             setplaylist(result.data);
             console.log(playlist);
