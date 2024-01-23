@@ -8,18 +8,30 @@ import { Store } from '../Store';
   
 
 const MusicPlayer = () => {
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { playlist, currentTrack } = state;
-  const { playlistItems } = playlist;
+  const [currentTrack, setTrackIndex] = React.useState(0);
+  const [playlist, setplaylist] = useState([])
 
-  console.log(`currentTrack = ${currentTrack}`)
-  console.log(`playlist = ${JSON.stringify(playlist)}`)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get("http://localhost:5000/api/songs");
+        console.log(result.data);
+        setplaylist(result.data);
+        console.log(playlist);
+      } catch (error) {
+        console.log("error");
+      }
+    };
+    fetchData();
+  }, []);
 
+  useEffect(() => {
+    console.log(playlist);
+  }, [playlist, currentTrack]);
 
-
-  // console.log(`${playlistItems[currentTrack]?.name}`);
-  // console.log(`${playlistItems[currentTrack]?.image}`);
-  // console.log(`${playlistItems[currentTrack]?.audio}`);
+//   console.log(`${playlist[0].name}`);
+//   console.log(`${playlist[0].image}`);
+//   console.log(`${playlist[0].audio}`);
 
 const handleClickNext = () => {
   ctxDispatch({ type: 'SET_CURRENT_TRACK', payload: currentTrack < playlist.length - 1 ? currentTrack + 1 : 0 });

@@ -46,7 +46,7 @@ const [{ loading, error, song }, dispatch] = useReducer(reducer, {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`http://localhost:5000/api/songs/slug/${slug}`);
+        const result = await axios.get(`https://one-music-7snl.onrender.com/api/songs/slug/${slug}`);
         console.log(`result of SS = ${result}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
@@ -57,39 +57,43 @@ const [{ loading, error, song }, dispatch] = useReducer(reducer, {
     fetchData();
   }, [slug]);
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { playlist, currentTrack } = state;
-  const { playlistItems } = playlist;
-  console.log(playlist.playlistItems);
+  
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get("http://localhost:5000/api/songs");
+        console.log(result.data);
+        setplaylist(result.data);
+        console.log(playlist);
+      } catch (error) {
+        console.log("error");
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(playlist);
+  }, [playlist, currentTrack]);
+
+//   const { state, dispatch: ctxDispatch } = useContext(Store);
+//   const { cart } = state;
   const addToPlaylistHandler = async () => {
-    const existItem = playlist.playlistItems.find((x) => x.slug === song.slug);
-    if (existItem) {
-      window.alert("Sorry, the song is already added to the playlist");
-    } else {
-      ctxDispatch({ type: "PLAYLIST_ADD_ITEM", payload: song });
-      return;
-    }
-    // await navigate(`/song/${song.slug}`);
-  };
-  
-  
-
-  const removeFromPlaylistHandler = async (music) => {
-    ctxDispatch({ type: "PLAYLIST_REMOVE_ITEM", payload: music });
-    navigate(`/song/${music.slug}`);
-  };
-
-  const playHandler = async () => {
-    // Find the index of the selected song in the playlist
-    const selectedIndex = playlistItems.findIndex((song) => song.slug === slug);
-    console.log(`selectedIndex = ${selectedIndex}`);
-  
-    // Set the current track index to the found index or 0 if not found
-    ctxDispatch({ type: 'SET_CURRENT_TRACK', payload: selectedIndex >= 0 ? selectedIndex : 0 });
-  
-    // Optional: You can navigate to the music player or update the UI as needed
-    navigate(`/song/${slug}`);
+    // console.log('cart = ' + JSON.stringify(cart));
+    // console.log('product = ' + JSON.stringify(product));
+    // const existItem = cart.cartItems.find((x) => x._id === product._id);
+    // // console.log('existItem = ' + JSON.stringify(existItem));
+    // const quantity = existItem ? existItem.quantity + 1 : 1;
+    // // console.log(`quantity = ${quantity}`);
+    // const { data } = await axios.get(`http://localhost:5000/api/products/${product._id}`);
+    // if (data.countInStock < quantity) {
+    //   window.alert("Sorry, the product is out of stock");
+    //   return;
+    // }
+    // ctxDispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+    // navigate("/cart");
+    console.log("added to playlist");
   };
   
   
