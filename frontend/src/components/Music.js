@@ -4,7 +4,7 @@ import '../index.css'
 
 const MusicCard = ({ music }) => {
   const Img = `${music.image}250x250.jpg`
-  console.log(Img);
+  // console.log(Img);
   return (
     <Card className="music-card"  style={{ alignItems: 'center', backgroundColor: '#000', color: '#fff', position: 'relative' }}>
       <Link to={`/song/${music.slug}`}>

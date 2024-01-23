@@ -7,10 +7,10 @@ import cors from "cors";
 
 dotenv.config();
 
-console.log(process.env.MONGODB_URI);
+const uri = process.env.MONGODB_URI;
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect("mongodb+srv://manjeet1826510:Man*1492@cluster0.avmfbje.mongodb.net/?retryWrites=true&w=majority")
   .then(() => console.log("connected to db"))
   .catch((err) => console.log("error ="+err.message));
 

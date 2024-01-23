@@ -12,6 +12,7 @@ import MessageBox from "../components/MessageBox";
 import { Store } from "../Store";
 import '../index.css'
 import NextSong from "../components/NextSong";
+import { toast } from "react-toastify";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,19 +28,20 @@ const reducer = (state, action) => {
 };
 
 const SongScreen = () => {
-  const [currentTrack, setTrackIndex] = React.useState(0);
-  const [playlist, setplaylist] = useState([])
+
+//   console.log(`slug = ${slug}`);
   const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
-//   console.log(`slug = ${slug}`);
+
+const [{ loading, error, song }, dispatch] = useReducer(reducer, {
+  song: [],
+  loading: true,
+  error: "",
+});
+
   
 
-  const [{ loading, error, song }, dispatch] = useReducer(reducer, {
-    song: [],
-    loading: true,
-    error: "",
-  });
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
@@ -55,44 +57,43 @@ const SongScreen = () => {
     fetchData();
   }, [slug]);
 
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { playlist, currentTrack } = state;
+  const { playlistItems } = playlist;
+  console.log(playlist.playlistItems);
+
+  const addToPlaylistHandler = async () => {
+    const existItem = playlist.playlistItems.find((x) => x.slug === song.slug);
+    if (existItem) {
+      window.alert("Sorry, the song is already added to the playlist");
+    } else {
+      ctxDispatch({ type: "PLAYLIST_ADD_ITEM", payload: song });
+      return;
+    }
+    // await navigate(`/song/${song.slug}`);
+  };
+  
   
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get("http://localhost:5000/api/songs");
-        console.log(result.data);
-        setplaylist(result.data);
-        console.log(playlist);
-      } catch (error) {
-        console.log("error");
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    console.log(playlist);
-  }, [playlist, currentTrack]);
-
-//   const { state, dispatch: ctxDispatch } = useContext(Store);
-//   const { cart } = state;
-  const addToPlaylistHandler = async () => {
-    // console.log('cart = ' + JSON.stringify(cart));
-    // console.log('product = ' + JSON.stringify(product));
-    // const existItem = cart.cartItems.find((x) => x._id === product._id);
-    // // console.log('existItem = ' + JSON.stringify(existItem));
-    // const quantity = existItem ? existItem.quantity + 1 : 1;
-    // // console.log(`quantity = ${quantity}`);
-    // const { data } = await axios.get(`http://localhost:5000/api/products/${product._id}`);
-    // if (data.countInStock < quantity) {
-    //   window.alert("Sorry, the product is out of stock");
-    //   return;
-    // }
-    // ctxDispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
-    // navigate("/cart");
-    console.log("added to playlist");
+  const removeFromPlaylistHandler = async (music) => {
+    ctxDispatch({ type: "PLAYLIST_REMOVE_ITEM", payload: music });
+    navigate(`/song/${music.slug}`);
   };
+
+  const playHandler = async () => {
+    // Find the index of the selected song in the playlist
+    const selectedIndex = playlistItems.findIndex((song) => song.slug === slug);
+    console.log(`selectedIndex = ${selectedIndex}`);
+  
+    // Set the current track index to the found index or 0 if not found
+    ctxDispatch({ type: 'SET_CURRENT_TRACK', payload: selectedIndex >= 0 ? selectedIndex : 0 });
+  
+    // Optional: You can navigate to the music player or update the UI as needed
+    navigate(`/song/${slug}`);
+  };
+  
+  
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -120,7 +121,13 @@ const SongScreen = () => {
                       <Button onClick={addToPlaylistHandler} variant="dark">
                         Add to Playlist
                       </Button>
-                    </div>
+          </div>
+          <br/>
+          <div className="d-grid">
+                      <Button onClick={playHandler} variant="dark">
+                        Play
+                      </Button>
+          </div>
         </div>
       </Col>
       <Col md={4}>
@@ -128,29 +135,33 @@ const SongScreen = () => {
             <h1>Up Next</h1>
             <div>
                 <div className='scroll-container'>
-                    <ListGroup>
-                        {playlist.map((music) => (
-                            <Link to={`/song/${music.slug}`}>
-                            <ListGroup.Item className='listg' key={music.slug}>
-                            <div className='song-info-next'>
-                                <div className='image-container'>
-                                    <img src={`${music.image}50x50.jpg`} />
-                                    
-                                </div>
-                                <div className='text-container'>
-                                    <div className='song-name'>
-                                    {music.name}
-                                    </div>
-                                    <div className='singer-name'>
-                                    {music.artist}
-                                    </div>
-                                </div>
-                            </div>
-                        </ListGroup.Item>
-                        </Link>
-                                    
-                        ))}
-                    </ListGroup>
+                <ListGroup>
+  {playlist.playlistItems.map((music) => (
+    <Link to={`/song/${music.slug}`} key={music.slug}>
+      <ListGroup.Item className='listgs listg' key={music.slug}>
+        <div className='song-info-next'>
+          <div className='image-container'>
+            <img src={`${music.image}50x50.jpg`} alt={music.name} />
+          </div>
+          <div className='text-container'>
+            <div className='song-name' title={music.name}>
+              {music.name.length > 20 ? music.name.slice(0, 20) + '...' : music.name}
+            </div>
+            <div className='singer-name' title={music.artist}>
+              {music.artist.length > 20 ? music.artist.slice(0, 20) + '...' : music.artist}
+            </div>
+          </div>
+          <div className="remove-btn">
+            <Button onClick={() => removeFromPlaylistHandler(music)} variant="dark">
+              Remove
+            </Button>
+          </div>
+        </div>
+      </ListGroup.Item>
+    </Link>
+  ))}
+</ListGroup>
+
                     <br/>
                     <br/>
                     <br/>

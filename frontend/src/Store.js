@@ -7,15 +7,21 @@ const initialState = {
       ? JSON.parse(localStorage.getItem("playlistItems"))
       : [],
   },
+  userInfo: localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : null,
+  currentTrack: 0,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "PLAYLIST_ADD_ITEM":
   const newItem = action.payload;
-  const playlistItems = [...state.playlist.playlistItems, newItem];
-  localStorage.setItem("playlistItems", JSON.stringify(playlistItems));
-  return { ...state, playlist: { ...state.playlist, playlistItems } };
+  const updatedPlaylistItems = [...state.playlist.playlistItems, newItem];
+
+  localStorage.setItem("playlistItems", JSON.stringify(updatedPlaylistItems));
+  return { ...state, playlist: { ...state.playlist, playlistItems: updatedPlaylistItems } };
+
 
     case "PLAYLIST_REMOVE_ITEM": {
       const playlistItems = state.playlist.playlistItems.filter(
@@ -27,6 +33,26 @@ const reducer = (state, action) => {
     case "PLAYLIST_CLEAR": {
       return { ...state, playlist: { ...state.playlist, playlistItems: [] } };
     }
+    case "USER_SIGNIN": {
+      return { ...state, userInfo: action.payload };
+    }
+    case "USER_SIGNOUT": {
+      return {
+        ...state,
+        userInfo: null,
+        playlist: {
+          playlistItems: localStorage.getItem("playlistItems")
+            ? JSON.parse(localStorage.getItem("playlistItems"))
+            : [],
+        },
+      };
+    }
+    case 'SET_CURRENT_TRACK': {
+      const updatedState = { ...state, currentTrack: action.payload };
+      localStorage.setItem('musicPlayerState', JSON.stringify(updatedState));
+      return updatedState;
+    }
+
     default:
       return state;
   }

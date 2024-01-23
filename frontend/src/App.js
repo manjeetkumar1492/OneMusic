@@ -10,21 +10,36 @@ import MusicPlayer from "./components/MusicPlayer";
 import SongScreen from "./screens/SongScreen";
 import { Col, Row } from "react-bootstrap";
 import '../src/index.css'
+import { useContext } from "react";
+import { Store } from "./Store";
+import { ToastContainer } from "react-toastify";
 
 const App = ()=> {
-  const userInfo = true;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    // console.log(state);
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+    // navigate('/signin');
+    window.location.href = "/signin";
+  };
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
+      <ToastContainer position="bottom-center" limit={1} />
         <Navbar sticky="top" bg="black" data-bs-theme="dark" expand="lg">
           <Container>
             <LinkContainer to="/">
               <Navbar.Brand>
           
            <div className="brand">
-            <i className="fa fa-play-circle fa-2x"></i>
+            {/* <i className="fa fa-play-circle fa-2x"></i> */}
 
-  <h3>neMusic</h3>
+  <h3>🎵OneMusic</h3>
   </div>
   </Navbar.Brand>
       </LinkContainer>
@@ -36,8 +51,8 @@ const App = ()=> {
             <SearchBox/>
             <Nav className="me-auto w-100 justify-content-end">
 
-                  <Link to="/cart" className="nav-link">
-                    Manjeet Kumar
+            <Link to="/playlist" className="nav-link">
+                    Playlist
                   </Link>
                   
                   {userInfo ? (
@@ -52,6 +67,7 @@ const App = ()=> {
                       <Link
                         className="dropdown-item"
                         to="#signout"
+                        onClick={signoutHandler}
                        
                       >
                         Sign Out
