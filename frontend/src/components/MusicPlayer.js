@@ -22,7 +22,7 @@ const MusicPlayer = () => {
   // console.log(`${playlistItems[currentTrack]?.audio}`);
 
 const handleClickNext = () => {
-  ctxDispatch({ type: 'SET_CURRENT_TRACK', payload: currentTrack < playlist.length - 1 ? currentTrack + 1 : 0 });
+  ctxDispatch({ type: 'SET_CURRENT_TRACK', payload:  currentTrack < playlist.length - 1 ? currentTrack + 1 : 0 });
 };
 
 const handleClickPrevious = () => {
