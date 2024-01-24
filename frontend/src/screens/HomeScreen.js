@@ -25,19 +25,21 @@ const HomeScreen = () => {
     error: "",
   });
 
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const result = await axios.get("http://localhost:5000/api/songs");
-            console.log(result.data);
-            setplaylist(result.data);
-            console.log(playlist);
-          } catch (error) {
-            console.log("error");
-          }
-        };
-        fetchData();
-      }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch({ type: "FETCH_REQUEST" });
+      try {
+        const result = await axios.get("http://localhost:5000/api/songs");
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+        // console.log(result.data);
+      } catch (error) {
+        dispatch({ type: "FETCH_FAIL", payload: error.message });
+      }
+      // console.log(result);
+      // setProducts(result.data);
+    };
+    fetchData();
+  }, []);
 
 
 
