@@ -1,7 +1,7 @@
 
 # OneMusic - MERN Online Music Streaming Web App
 
-A Mern website/web app for online music streaming.
+A Mern website/web app for online ad-free music streaming.
 
 ## Demo Website
 
