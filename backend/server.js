@@ -11,7 +11,7 @@ dotenv.config();
 const uri = process.env.MONGODB_URI;
 
 mongoose
-  .connect("mongodb+srv://manjeet1826510:Man*1492@cluster0.avmfbje.mongodb.net/?retryWrites=true&w=majority")
+  .connect(uri)
   .then(() => console.log("connected to db"))
   .catch((err) => console.log("error ="+err.message));
 
