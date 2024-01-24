@@ -46,7 +46,7 @@ const [{ loading, error, song }, dispatch] = useReducer(reducer, {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`https://one-music-7snl.onrender.com/api/song/slug/${slug}`);
+        const result = await axios.get(`https://one-music-7snl.onrender.com/api/songs/slug/${slug}`);
         console.log(`result of SS = ${result}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
