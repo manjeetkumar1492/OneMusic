@@ -29,7 +29,7 @@ const HomeScreen = () => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get("http://localhost:5000/api/songs");
+        const result = await axios.get("https://one-music-7snl.onrender.com/api/songs");
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
         // console.log(result.data);
       } catch (error) {
