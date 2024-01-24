@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import songRouter from "./routes/songRoutes.js";
 import path from "path";
 import cors from "cors";
+import userRouter from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // app.use("/api/seed", seedRouter);
 app.use(`/api/songs`, songRouter);
+app.use(`/api/users`, userRouter);
 
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/frontend/build")));

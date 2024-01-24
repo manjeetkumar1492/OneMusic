@@ -43,6 +43,23 @@ main{
   background-color: black;
 }
 
+Form #email {
+  background-color: black !important;
+  color: white !important;
+}
+Form #password {
+  background-color: black !important;
+  color: white !important;
+}
+Form #confirmPassword {
+  background-color: black !important;
+  color: white !important;
+}
+Form #name {
+  background-color: black !important;
+  color: white !important;
+}
+
 
 
 .musics{
@@ -58,6 +75,11 @@ main{
   color: #000;
   align-items: center;
   width: 18px;
+}
+
+.small-container{
+  max-width: 600px !important;
+  color: #f0f0f0;
 }
 
 h1, h3, h2{

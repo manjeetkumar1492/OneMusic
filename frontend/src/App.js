@@ -12,7 +12,13 @@ import { Col, Row } from "react-bootstrap";
 import '../src/index.css'
 import { useContext } from "react";
 import { Store } from "./Store";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Playlist from "./screens/Playlist";
+import SigninScreen from "./screens/SigninScreen";
+import SignupScreen from "./screens/SignupScreen";
+import AdminRoute from "./components/AdminRoute";
+import SongListScreen from "./screens/SongListScreen";
 
 const App = ()=> {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -22,15 +28,15 @@ const App = ()=> {
     ctxDispatch({ type: "USER_SIGNOUT" });
     // console.log(state);
     localStorage.removeItem("userInfo");
-    localStorage.removeItem("shippingAddress");
-    localStorage.removeItem("paymentMethod");
     // navigate('/signin');
     window.location.href = "/signin";
   };
+
+
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
-      <ToastContainer position="bottom-center" limit={1} />
+      <ToastContainer position="top-center" limit={1} />
         <Navbar sticky="top" bg="black" data-bs-theme="dark" expand="lg">
           <Container>
             <LinkContainer to="/">
@@ -56,12 +62,12 @@ const App = ()=> {
                   </Link>
                   
                   {userInfo ? (
-                    <NavDropdown title={userInfo} id="basic-nav-dropdown">
+                    <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                       <LinkContainer to="/profile">
                         <NavDropdown.Item>User Profile</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/orderhistory">
-                        <NavDropdown.Item>Order History</NavDropdown.Item>
+                        <NavDropdown.Item>Song History</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
                       <Link
@@ -81,6 +87,20 @@ const App = ()=> {
                     </Link>
                   )}
 
+{userInfo && userInfo.isAdmin && (
+                    <NavDropdown title="Admin" id="admin-nav-dropdown">
+                      <LinkContainer to="/admin/dashboard">
+                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/songlist">
+                        <NavDropdown.Item>Songs</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/userlist">
+                        <NavDropdown.Item>Users</NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
+                  )}
+
                   
                 </Nav>
 
@@ -93,6 +113,19 @@ const App = ()=> {
                 <Route path="/" element={<HomeScreen />}/>
                 <Route path="/music/kesariya" element={<MusicPlayer/>}/>
                 <Route path="/song/:slug" element={<SongScreen />} />
+                <Route path="/playlist" element={<Playlist />} />
+                <Route path="/signin" element={<SigninScreen />} />
+                <Route path="/signup" element={<SignupScreen />} />
+
+                <Route
+                path="/admin/songlist"
+                element={
+                  <AdminRoute>
+                    {" "}
+                    <SongListScreen />{" "}
+                  </AdminRoute>
+                }
+              />
               </Routes>
             </Container>
           </main>

@@ -1,6 +1,7 @@
 import express from "express";
 import Song from "../models/songModel.js";
 import expressAsyncHandler from "express-async-handler";
+import { isAdmin, isAuth } from "../utils.js";
 
 const songRouter = express.Router();
 
@@ -9,6 +10,27 @@ songRouter.get("/", async (req, res) => {
   // console.log(products);
   res.send(songs);
 });
+
+songRouter.post(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    console.log(`name = ${req.body.name}`);
+    const newSong = new Song({
+      name: req.body.name,
+      slug: req.body.slug,
+      image: req.body.image,
+      artist: req.body.artist,
+      audio: req.body.audio,
+    });
+    // console.log(newSong);
+
+    const song = await newSong.save();
+
+    res.send(song);
+  })
+);
 
 songRouter.post(
     "/",

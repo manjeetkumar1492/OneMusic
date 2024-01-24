@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import axios from "axios";
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import '../index.css';
