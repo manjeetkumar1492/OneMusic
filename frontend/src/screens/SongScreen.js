@@ -145,7 +145,7 @@ const [{ loading, error, song }, dispatch] = useReducer(reducer, {
           </div>
           <div className='text-container'>
             <div className='song-name' title={music.name}>
-              {music.name.length > 20 ? music.name.slice(0, 20) + '...' : music.name}
+              {music.name.length > 20 ? music.name.slice(0, 15) + '...' : music.name}
             </div>
             <div className='singer-name' title={music.artist}>
               {music.artist.length > 20 ? music.artist.slice(0, 20) + '...' : music.artist}

@@ -51,16 +51,29 @@ const HomeScreen = () => {
 
         <hr/>
         <h1>Listen Again</h1>
-        <br/>
-        <div className='musics'>
-            <Row>
-                {songs.map((music) => (
-                <Col xs={6} lg={2} className="mb-3" key={music.slug}>
-                    <Music music={music} />
-                </Col>
-                ))}
-            </Row>
+          <h1>←→</h1>
+        <div className='musics-container' style={{ width: '100%', overflowX: 'auto' }}>
+          <Row style={{ display: 'flex', flexWrap: 'nowrap' }}>
+            {songs.map((music) => (
+              <Col xs={4} lg={2} className="mb-3" key={music.slug}>
+                <Music music={music} />
+              </Col>
+            ))}
+          </Row>
         </div>
+        <h1>Trending in India</h1>
+        <h1>←→</h1>
+        <div className='musics-container' style={{ width: '100%', overflowX: 'auto' }}>
+          <Row style={{ display: 'flex', flexWrap: 'nowrap' }}>
+            {songs.map((music) => (
+              <Col xs={4} lg={2} className="mb-3" key={music.slug}>
+                <Music music={music} />
+              </Col>
+            ))}
+          </Row>
+        </div>
+        
+
         <br/><br/><br/><br/><br/>
     </div>
   )
