@@ -5,7 +5,7 @@
   "main": "backend/server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "build": "ulimit -n 2048 && npm install -g npm@latest && cd backend && npm ci && cd ../frontend && npm ci && npm run build",
+    "build": "npm install -g npm@latest && cd backend && npm ci && cd ../frontend && npm ci && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
